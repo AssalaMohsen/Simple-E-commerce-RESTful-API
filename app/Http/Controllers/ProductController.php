@@ -40,7 +40,7 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->stock = $request->stock;
         $product->discount = $request->discount;
-        $product->user_id =  request()->user()->id;
+        $product->admin_id =  request()->user()->id;
  
         $product->save();
  

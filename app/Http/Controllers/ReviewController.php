@@ -31,7 +31,8 @@ class ReviewController extends Controller
     public function store(RequestsReview $request , Product $product)
     {
         $review = new Review($request->all());
-       
+        $review->prduct_id = $product->id;
+        $review->user_id = request()->user()->id;
         $product->reviews()->save($review);
        
         return response([
