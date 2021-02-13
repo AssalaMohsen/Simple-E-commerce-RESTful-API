@@ -33,6 +33,7 @@ class ReviewController extends Controller
         $review = new Review($request->all());
         $review->prduct_id = $product->id;
         $review->user_id = request()->user()->id;
+        $review->customer = request()->user()->name;
         $product->reviews()->save($review);
        
         return response([
