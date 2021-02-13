@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -32,13 +33,16 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::apiResource('/{product}/reviews', ReviewController::class);
   });
+  Route::apiResource('/products/{product}/orders',OrderController::class);
 });
 
+
+
 Route::group(['middleware' => ['guest:sanctum'], 'as' => 'auth.'], function () {
-  Route::post('/AdminLogin', [AdminController::class, "login"]);
-  Route::post('/AdminRegister', [AdminController::class, "register"]);
+  Route::post('/login', [UserController::class, "login"]);
+  Route::post('/register', [UserController::class, "register"]);
 });
 
 Route::group(['middleware' => ['auth:sanctum'],], function () {
-Route::post('/AdminLogout', [AdminController::class, "logout"]);
+Route::post('/logout', [UserController::class, "logout"]);
 });

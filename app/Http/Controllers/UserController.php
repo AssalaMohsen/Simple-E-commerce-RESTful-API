@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class AdminController extends Controller
+class UserController extends Controller
 {
     public function login(Request $request){
-        $admin = Admin::where('email',$request->email)->first();
-        if(!$admin || !Hash::check($request->password, $admin->password)){
+        $user = User::where('email',$request->email)->first();
+        if(!$user || !Hash::check($request->password, $user->password)){
             return response(["message"=>"These credentials does not match our records."],404);
         }
-        $token = $admin->createToken('my_app_token')->plainTextToken;
-        $admin = Auth::guard('web')->user();
+        $token = $user->createToken('my_app_token')->plainTextToken;
+        $user = Auth::guard('web')->user();
         return response(["token_type" => "Bearer",
                         "access_token" => $token,]
                         ,200);
@@ -29,26 +29,26 @@ class AdminController extends Controller
             'password' => ['required', 'string', 'min:8'],
         ]);
 
-        $admin = new Admin();
-        $admin->fill([
+        $user = new User();
+        $user->fill([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
         ]);
-        $admin->save();
+        $user->save();
 
-        event(new \Illuminate\Auth\Events\Registered($admin));
+        event(new \Illuminate\Auth\Events\Registered($user));
 
         return response()->noContent();
     }
 
     public function logout(Request $request)
     {
-        $admin = Admin::where('id',$request->user()->id)->first();
+        $user = User::where('id',$request->user()->id)->first();
 
-        $admin->tokens()->delete();
+        $user->tokens()->delete();
 
-        event(new \Illuminate\Auth\Events\Logout('sanctum', $admin));
+        event(new \Illuminate\Auth\Events\Logout('sanctum', $user));
 
         return response()->noContent();
     }

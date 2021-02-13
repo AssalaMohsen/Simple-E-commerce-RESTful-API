@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->double('discount');
             $table->foreignId('admin_id');
             $table->timestamps();
-            $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
+            $table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade');
             
         });
     }
