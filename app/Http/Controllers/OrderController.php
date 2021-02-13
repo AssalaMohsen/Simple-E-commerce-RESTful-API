@@ -38,7 +38,8 @@ class OrderController extends Controller
         $order->product_id = $product->id;
         $order->user_id = request()->user()->id;
         $order->status = "processed";
-
+        $product->stock -= $order->amount;
+        $product->save();
         $order->save();
 
         return response([
